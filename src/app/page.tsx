@@ -121,6 +121,26 @@ export default function Home() {
   const combinedDecimalTime = decimalTime.quest * 1000000 + decimalTime.moment * 10000 + decimalTime.beat * 100;
   const decimalTimeString = combinedDecimalTime.toString().padStart(7, '0');
 
+  const calculateProgress = (current: number, total: number) => {
+    const percentage = Math.floor((current / total) * 100);
+    return {
+      percentage: Math.min(100, Math.max(0, percentage)),
+      width: `${Math.min(100, Math.max(0, percentage))}%`
+    };
+  };
+
+  const yearProgress = calculateProgress(mindfulTime.chapter * 28 + mindfulTime.arc * 7 + mindfulTime.episode, 364);
+  const chapterProgress = calculateProgress((mindfulTime.arc - 1) * 7 + mindfulTime.episode, 28);
+  
+  // New arc progress calculation
+  const episodeCompletion = (decimalTime.quest * 10000 + decimalTime.moment * 100 + decimalTime.beat) / 100000;
+  const arcProgress = calculateProgress(
+    ((mindfulTime.episode - 1) % 7) + episodeCompletion,
+    7
+  );
+  
+  const episodeProgress = calculateProgress(decimalTime.quest * 10000 + decimalTime.moment * 100 + decimalTime.beat, 100000);
+
   return (
     <div className="min-h-screen p-8 flex flex-col items-center justify-center bg-white dark:bg-gray-800 text-black dark:text-white">
       <h1 className="text-4xl font-bold mb-8">Mindful Time</h1>
@@ -147,11 +167,35 @@ export default function Home() {
         />
       </div>
 
-      <div className="text-xl mb-4">
-        <p>Year: {mindfulTime.year}</p>
-        <p>Chapter: {mindfulTime.chapter}</p>
-        <p>Arc: {mindfulTime.arc}</p>
-        <p>Episode: {mindfulTime.episode}</p>
+      <div className="text-xl mb-4 w-full max-w-md">
+        <div className="mb-2">
+          <p>Year: {mindfulTime.year}</p>
+          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+            <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: yearProgress.width }}></div>
+          </div>
+          <p className="text-sm text-right">{yearProgress.percentage}%</p>
+        </div>
+        <div className="mb-2">
+          <p>Chapter: {mindfulTime.chapter}</p>
+          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+            <div className="bg-green-600 h-2.5 rounded-full" style={{ width: chapterProgress.width }}></div>
+          </div>
+          <p className="text-sm text-right">{chapterProgress.percentage}%</p>
+        </div>
+        <div className="mb-2">
+          <p>Arc: {mindfulTime.arc}</p>
+          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+            <div className="bg-yellow-600 h-2.5 rounded-full" style={{ width: arcProgress.width }}></div>
+          </div>
+          <p className="text-sm text-right">{arcProgress.percentage}%</p>
+        </div>
+        <div className="mb-2">
+          <p>Episode: {mindfulTime.episode}</p>
+          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+            <div className="bg-red-600 h-2.5 rounded-full" style={{ width: episodeProgress.width }}></div>
+          </div>
+          <p className="text-sm text-right">{episodeProgress.percentage}%</p>
+        </div>
         <p>Decimal Time: 0.{decimalTimeString}</p>
         <p>Quest / Moment / Beat: {decimalTime.quest}:{decimalTime.moment}:{decimalTime.beat < 10 ? `0${decimalTime.beat}` : decimalTime.beat}</p>
       </div>
