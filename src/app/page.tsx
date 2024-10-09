@@ -145,42 +145,41 @@ export default function Home() {
     <div className="min-h-screen p-8 flex flex-col items-center justify-center bg-white dark:bg-gray-800 text-black dark:text-white">
       <h1 className="text-4xl font-bold mb-8">Mindful Time</h1>
       
-      <div className="mb-4">
-        <label htmlFor="birthday" className="block mb-2">Birthday:</label>
-        <input
-          type="date"
-          id="birthday"
-          value={birthday}
-          onChange={(e) => setBirthday(e.target.value)}
-          className="border p-2 rounded bg-white dark:bg-gray-700 text-black dark:text-white"
-        />
-      </div>
-
-      <div className="mb-8">
-        <label htmlFor="dayStartTime" className="block mb-2">Day Start Time:</label>
-        <input
-          type="time"
-          id="dayStartTime"
-          value={dayStartTime}
-          onChange={(e) => setDayStartTime(e.target.value)}
-          className="border p-2 rounded bg-white dark:bg-gray-700 text-black dark:text-white"
-        />
+      <div className="mb-8 flex gap-4">
+        <div>
+          <label htmlFor="birthday" className="block mb-2">Birthday:</label>
+          <input
+            type="date"
+            id="birthday"
+            value={birthday}
+            onChange={(e) => setBirthday(e.target.value)}
+            className="border p-2 rounded bg-white dark:bg-gray-700 text-black dark:text-white"
+          />
+        </div>
+        <div>
+          <label htmlFor="dayStartTime" className="block mb-2">Day Start Time:</label>
+          <input
+            type="time"
+            id="dayStartTime"
+            value={dayStartTime}
+            onChange={(e) => setDayStartTime(e.target.value)}
+            className="border p-2 rounded bg-white dark:bg-gray-700 text-black dark:text-white"
+          />
+        </div>
       </div>
 
       <div className="text-xl mb-4 w-full max-w-md">
+        <h2 className="text-center text-sm mb-1">Quest / Moment / Beat</h2>
+        <p className="text-6xl font-bold text-center mb-4">
+          {decimalTime.quest}:{decimalTime.moment}:{decimalTime.beat < 10 ? `0${decimalTime.beat}` : decimalTime.beat}
+        </p>
+        
         <div className="mb-2">
-          <p>Year: {mindfulTime.year}</p>
+          <p>Episode: {mindfulTime.episode}</p>
           <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-            <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: yearProgress.width }}></div>
+            <div className="bg-red-600 h-2.5 rounded-full" style={{ width: episodeProgress.width }}></div>
           </div>
-          <p className="text-sm text-right">{yearProgress.percentage}%</p>
-        </div>
-        <div className="mb-2">
-          <p>Chapter: {mindfulTime.chapter}</p>
-          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-            <div className="bg-green-600 h-2.5 rounded-full" style={{ width: chapterProgress.width }}></div>
-          </div>
-          <p className="text-sm text-right">{chapterProgress.percentage}%</p>
+          <p className="text-sm text-right">{episodeProgress.percentage}%</p>
         </div>
         <div className="mb-2">
           <p>Arc: {mindfulTime.arc}</p>
@@ -190,14 +189,20 @@ export default function Home() {
           <p className="text-sm text-right">{arcProgress.percentage}%</p>
         </div>
         <div className="mb-2">
-          <p>Episode: {mindfulTime.episode}</p>
+          <p>Chapter: {mindfulTime.chapter}</p>
           <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-            <div className="bg-red-600 h-2.5 rounded-full" style={{ width: episodeProgress.width }}></div>
+            <div className="bg-green-600 h-2.5 rounded-full" style={{ width: chapterProgress.width }}></div>
           </div>
-          <p className="text-sm text-right">{episodeProgress.percentage}%</p>
+          <p className="text-sm text-right">{chapterProgress.percentage}%</p>
+        </div>
+        <div className="mb-2">
+          <p>Year: {mindfulTime.year}</p>
+          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+            <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: yearProgress.width }}></div>
+          </div>
+          <p className="text-sm text-right">{yearProgress.percentage}%</p>
         </div>
         <p>Decimal Time: 0.{decimalTimeString}</p>
-        <p>Quest / Moment / Beat: {decimalTime.quest}:{decimalTime.moment}:{decimalTime.beat < 10 ? `0${decimalTime.beat}` : decimalTime.beat}</p>
       </div>
 
     </div>
