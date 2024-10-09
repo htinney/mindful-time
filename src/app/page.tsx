@@ -130,7 +130,7 @@ export default function Home() {
   };
 
   const yearProgress = calculateProgress(mindfulTime.chapter * 28 + mindfulTime.arc * 7 + mindfulTime.episode, 364);
-  const chapterProgress = calculateProgress((mindfulTime.arc - 1) * 7 + mindfulTime.episode, 28);
+  const chapterProgress = calculateProgress(mindfulTime.episode, 28);
   
   // New arc progress calculation
   const episodeCompletion = (decimalTime.quest * 10000 + decimalTime.moment * 100 + decimalTime.beat) / 100000;
@@ -176,29 +176,46 @@ export default function Home() {
         
         <div className="mb-2">
           <p>Episode: {mindfulTime.episode}</p>
-          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 relative">
             <div className="bg-red-600 h-2.5 rounded-full" style={{ width: episodeProgress.width }}></div>
+            {[...Array(9)].map((_, i) => (
+              <div key={i} className="absolute top-0 w-px h-2.5 bg-gray-400" style={{ left: `${(i + 1) * 10}%` }}></div>
+            ))}
           </div>
           <p className="text-sm text-right">{episodeProgress.percentage}%</p>
         </div>
         <div className="mb-2">
           <p>Arc: {mindfulTime.arc}</p>
-          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 relative">
             <div className="bg-yellow-600 h-2.5 rounded-full" style={{ width: arcProgress.width }}></div>
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="absolute top-0 w-px h-2.5 bg-gray-400" style={{ left: `${(i + 1) * (100 / 7)}%` }}></div>
+            ))}
           </div>
           <p className="text-sm text-right">{arcProgress.percentage}%</p>
         </div>
         <div className="mb-2">
           <p>Chapter: {mindfulTime.chapter}</p>
-          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 relative">
             <div className="bg-green-600 h-2.5 rounded-full" style={{ width: chapterProgress.width }}></div>
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="absolute top-0 w-px h-2.5 bg-gray-400" style={{ left: `${(i + 1) * 25}%` }}></div>
+            ))}
           </div>
           <p className="text-sm text-right">{chapterProgress.percentage}%</p>
         </div>
         <div className="mb-2">
           <p>Year: {mindfulTime.year}</p>
-          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 relative">
             <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: yearProgress.width }}></div>
+            {[...Array(12)].map((_, i) => {
+              let position = (i + 1) * (100 / 13);
+              if (i >= 5) position += 0.25; // Adjust for Leap Day
+              if (i >= 11) position += 0.25; // Adjust for Year Day
+              return (
+                <div key={i} className="absolute top-0 w-px h-2.5 bg-gray-400" style={{ left: `${position}%` }}></div>
+              );
+            })}
           </div>
           <p className="text-sm text-right">{yearProgress.percentage}%</p>
         </div>
